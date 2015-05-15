@@ -1,0 +1,67 @@
+<div class="page-header">
+    <h1>{{title}}</h1>
+</div>
+
+<ul id="ctr_msgarea" class="chattig-messages">
+    <!--<li>사람1 : 하하하</li>-->
+    <!--<li>사람2 : 호호호</li>-->
+</ul>
+
+<div class="input-group">
+    <input id="ctr_msg" type="text" class="form-control" placeholder="Input Messages...">
+    <span class="input-group-btn">
+        <button id="ctr_send" class="btn btn-default" type="button">입력</button>
+        <button id="ctr_leave" class="btn btn-default" type="button">방나가기</button>
+    </span>
+</div>
+
+<script src="/Js/socket.io.js"></script>
+<script>
+    var _roomID = '{{roomID}}';
+    var _midx = '{{midx}}';
+    var socket = io();
+
+    socket.emit('InitMember', { roomID: _roomID, midx: _midx });
+
+    socket.on('ReciveMessage', function (data) {
+        var ctr_msgarea = document.getElementById('ctr_msgarea');
+        var el = document.createElement('li');
+        el.innerText = data.sender + ' : ' + data.msg;
+        ctr_msgarea.appendChild(el);
+    });
+
+    document.getElementById('ctr_msg').onkeypress = function (e) {
+        if (e.keyCode == 13) {
+            SendMessage();
+        }
+    }
+
+    document.getElementById('ctr_send').onclick = function (e) {
+        SendMessage();
+    }
+
+    document.getElementById('ctr_leave').onclick = function (e) {
+        socket.emit('OutMemver', { roomID: _roomID, midx: _midx });
+        location.href = '/chatting';
+    }
+
+    function SendMessage() {
+        var ctr_msg = document.getElementById('ctr_msg');
+        if (ctr_msg.value == '') {
+            return;
+        }
+        else {
+            socket.emit('SenMessage', ctr_msg.value);
+        }
+
+        ctr_msg.value = '';
+    }
+
+    //function LeaveRoom() {
+    //    socket.emit('OutMemver', { roomID: _roomID, midx: _midx });
+    //}
+</script>
+
+<!--<script language="javascript" event="onunload" for="window">
+    LeaveRoom();
+</script>--> 

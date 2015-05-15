@@ -1,0 +1,15 @@
+
+.page-main {}
+
+/* 회원가입 */
+.page-join {}
+
+/* 로그인 */
+.page-login {}
+
+/* 채팅 - 대기방 */
+.page-chattingStep1 {}
+
+/* 채팅 - 채팅방입장 */
+.page-chattingStep2 {}
+.page-chattingStep2 ul.chattig-messages {overflow:auto; height:200px; margin-bottom:5px; padding:10px; border:1px solid #999;}
